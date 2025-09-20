@@ -1,14 +1,22 @@
 import os
 
 from flask import Flask
+from resume_analyzer.routes import resumes_bp
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
 
-@app.route("/")
-def hello_world():
-  """Example Hello World route."""
-  name = os.environ.get("NAME", "World")
-  return f"Hello {name}!"
+    # A simple health check route
+    @app.route("/")
+    def hello_world():
+        """Example Hello World route."""
+        return "Resume Analyzer is up and running!"
+
+    # Register the blueprint for resume and JD uploads
+    app.register_blueprint(resumes_bp, url_prefix='/api')
+
+    return app
 
 if __name__ == "__main__":
-  app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 3000)))
+    app = create_app()
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
