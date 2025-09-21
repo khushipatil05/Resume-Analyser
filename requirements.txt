@@ -1,7 +1,13 @@
-Flask
-PyMuPDF
+flask
+PyPDF2
 python-docx
 streamlit
 requests
+scikit-learn
+Flask-SQLAlchemy
+Flask-Migrate
 google-generativeai
 python-dotenv
+Flask-Mail
+thefuzz
+python-Levenshtein

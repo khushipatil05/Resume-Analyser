@@ -1,0 +1,276 @@
+
+[
+  {
+    "id": 1,
+    "title": "Backend Developer",
+    "description": "Develops and maintains the server-side logic of web applications.",
+    "keywords": ["python", "java", "nodejs", "ruby", "php", "sql", "nosql", "rest", "graphql", "docker"],
+    "type": "technical"
+  },
+  {
+    "id": 2,
+    "title": "Frontend Developer",
+    "description": "Implements the user interface and user experience of web applications.",
+    "keywords": ["html", "css", "javascript", "react", "angular", "vue", "typescript", "webpack"],
+    "type": "technical"
+  },
+  {
+    "id": 3,
+    "title": "Full-Stack Developer",
+    "description": "Works on both the frontend and backend of web applications.",
+    "keywords": ["python", "javascript", "react", "nodejs", "sql", "aws", "docker", "ci/cd"],
+    "type": "technical"
+  },
+  {
+    "id": 4,
+    "title": "Mobile App Developer",
+    "description": "Creates applications for mobile devices on iOS or Android.",
+    "keywords": ["swift", "kotlin", "java", "react native", "flutter", "xcode", "android studio"],
+    "type": "technical"
+  },
+  {
+    "id": 5,
+    "title": "Embedded Systems Engineer",
+    "description": "Designs and develops software for embedded systems and devices.",
+    "keywords": ["c", "c++", "microcontrollers", "rtos", "linux", "iot", "firmware"],
+    "type": "technical"
+  },
+  {
+    "id": 6,
+    "title": "DevOps Engineer",
+    "description": "Works on automating and streamlining the software development and deployment process.",
+    "keywords": ["aws", "azure", "gcp", "kubernetes", "docker", "terraform", "ansible", "jenkins", "ci/cd"],
+    "type": "technical"
+  },
+  {
+    "id": 7,
+    "title": "Cloud Engineer",
+    "description": "Designs, builds, and manages cloud-based infrastructure and services.",
+    "keywords": ["aws", "azure", "gcp", "cloudformation", "terraform", "serverless", "vpc"],
+    "type": "technical"
+  },
+  {
+    "id": 8,
+    "title": "Site Reliability Engineer (SRE)",
+    "description": "Ensures the reliability, scalability, and performance of production systems.",
+    "keywords": ["kubernetes", "prometheus", "grafana", "observability", "chaos engineering", "python", "go"],
+    "type": "technical"
+  },
+  {
+    "id": 9,
+    "title": "Systems Engineer",
+    "description": "Manages and maintains computer systems and networks.",
+    "keywords": ["linux", "windows server", "networking", "bash", "powershell", "virtualization"],
+    "type": "technical"
+  },
+  {
+    "id": 10,
+    "title": "Data Engineer",
+    "description": "Builds and manages data pipelines and infrastructure for data-intensive applications.",
+    "keywords": ["python", "sql", "spark", "kafka", "hadoop", "airflow", "etl", "data warehousing"],
+    "type": "technical"
+  },
+  {
+    "id": 11,
+    "title": "Machine Learning Engineer",
+    "description": "Designs and develops machine learning models and systems.",
+    "keywords": ["python", "tensorflow", "pytorch", "scikit-learn", "mlops", "aws sagemaker"],
+    "type": "technical"
+  },
+  {
+    "id": 12,
+    "title": "Data Scientist",
+    "description": "Analyzes and interprets complex data to help organizations make better decisions.",
+    "keywords": ["python", "r", "sql", "pandas", "statistics", "machine learning", "jupyter"],
+    "type": "technical"
+  },
+  {
+    "id": 13,
+    "title": "AI/ML Ops Engineer",
+    "description": "Manages the operationalization of AI and machine learning models.",
+    "keywords": ["mlops", "kubernetes", "docker", "aws", "azure", "ci/cd", "sagemaker", "mlflow"],
+    "type": "technical"
+  },
+  {
+    "id": 14,
+    "title": "Security Engineer",
+    "description": "Protects computer systems and networks from security threats.",
+    "keywords": ["cybersecurity", "network security", "penetration testing", "siem", "firewalls", "cryptography"],
+    "type": "technical"
+  },
+  {
+    "id": 15,
+    "title": "Quality Assurance (QA) Engineer",
+    "description": "Tests software to ensure it meets quality standards.",
+    "keywords": ["selenium", "cypress", "jira", "manual testing", "automated testing", "api testing"],
+    "type": "technical"
+  },
+  {
+    "id": 16,
+    "title": "Automation Engineer",
+    "description": "Designs and develops automated tests and testing frameworks.",
+    "keywords": ["python", "selenium", "robot framework", "playwright", "test automation", "ci/cd"],
+    "type": "technical"
+  },
+  {
+    "id": 17,
+    "title": "Solutions Engineer / Sales Engineer",
+    "description": "Provides technical expertise and support to the sales process.",
+    "keywords": ["pre-sales", "solution architecture", "aws", "communication", "product demos"],
+    "type": "technical"
+  },
+  {
+    "id": 18,
+    "title": "Technical Product Manager",
+    "description": "Defines the product vision and strategy from a technical perspective.",
+    "keywords": ["product management", "agile", "scrum", "user stories", "roadmapping", "technical architecture"],
+    "type": "technical"
+  },
+  {
+    "id": 19,
+    "title": "Business Intelligence (BI) Developer",
+    "description": "Designs and develops BI solutions, including reports, dashboards, and data models.",
+    "keywords": ["tableau", "power bi", "sql", "dax", "data visualization", "etl"],
+    "type": "technical"
+  },
+  {
+    "id": 20,
+    "title": "Game Developer",
+    "description": "Creates video games for various platforms.",
+    "keywords": ["unity", "unreal engine", "c++", "c#", "game design", "3d modeling"],
+    "type": "technical"
+  },
+  {
+    "id": 60,
+    "title": "Product Manager (PM)",
+    "description": "Owns the product vision, roadmaps, and cross-team alignment.",
+    "keywords": ["product strategy", "agile", "market analysis", "user research", "roadmapping"],
+    "type": "non-technical"
+  },
+  {
+    "id": 61,
+    "title": "Program Manager",
+    "description": "Oversees multiple projects, aligning business goals with execution.",
+    "keywords": ["project management", "gantt charts", "stakeholder management", "risk management"],
+    "type": "non-technical"
+  },
+  {
+    "id": 62,
+    "title": "Business Analyst",
+    "description": "Translates business needs into actionable requirements and works with dev teams.",
+    "keywords": ["requirements gathering", "sql", "data analysis", "process modeling", "jira"],
+    "type": "non-technical"
+  },
+  {
+    "id": 63,
+    "title": "Operations Manager",
+    "description": "Optimizes workflows, resource planning, and performance metrics.",
+    "keywords": ["operations", "logistics", "supply chain", "process improvement", "kpi"],
+    "type": "non-technical"
+  },
+  {
+    "id": 65,
+    "title": "Technical Recruiter",
+    "description": "Bridges hiring teams and candidates. Your engineering background makes you credible.",
+    "keywords": ["recruiting", "sourcing", "talent acquisition", "ats", "boolean search"],
+    "type": "non-technical"
+  },
+  {
+    "id": 69,
+    "title": "Sales Engineer / Pre-Sales Consultant",
+    "description": "Explains complex tech products in business terms.",
+    "keywords": ["sales", "pre-sales", "solution selling", "crm", "communication"],
+    "type": "non-technical"
+  },
+  {
+    "id": 70,
+    "title": "Digital Marketing Specialist",
+    "description": "SEO, social media strategy, and campaign optimization.",
+    "keywords": ["seo", "sem", "social media", "google analytics", "content marketing"],
+    "type": "non-technical"
+  },
+  {
+    "id": 72,
+    "title": "Customer Success Manager (CSM)",
+    "description": "Ensures clients achieve value, driving retention.",
+    "keywords": ["customer relationship", "saas", "account management", "retention", "onboarding"],
+    "type": "non-technical"
+  },
+  {
+    "id": 74,
+    "title": "UX/UI Designer",
+    "description": "Focuses on user journeys and visual storytelling.",
+    "keywords": ["figma", "sketch", "adobe xd", "user research", "wireframing", "prototyping"],
+    "type": "non-technical"
+  },
+  {
+    "id": 95,
+    "title": "Innovation Program Manager",
+    "description": "Drives company-wide ideation sessions, hackathons, and experimental pilots.",
+    "keywords": ["innovation", "ideation", "program management", "hackathon", "prototyping"],
+    "type": "non-technical"
+  },
+  {
+    "id": 96,
+    "title": "Corporate Development Associate",
+    "description": "Supports mergers, acquisitions, and strategic partnerships.",
+    "keywords": ["m&a", "finance", "due diligence", "valuation", "strategic partnerships"],
+    "type": "non-technical"
+  },
+  {
+    "id": 97,
+    "title": "Organizational Development Specialist",
+    "description": "Shapes company culture, workflows, and employee engagement strategies.",
+    "keywords": ["hr", "organizational design", "employee engagement", "culture", "training"],
+    "type": "non-technical"
+  },
+  {
+    "id": 98,
+    "title": "Chief of Staff (Executive Track)",
+    "description": "Works directly with executives to manage priorities, analyze decisions, and ensure alignment across teams.",
+    "keywords": ["strategy", "executive support", "project management", "leadership", "communication"],
+    "type": "non-technical"
+  },
+  {
+    "id": 99,
+    "title": "Brand Strategist",
+    "description": "Defines brand positioning and storytelling for companies or products.",
+    "keywords": ["branding", "marketing", "strategy", "storytelling", "market research"],
+    "type": "non-technical"
+  },
+  {
+    "id": 100,
+    "title": "Creative Director (Tech Companies)",
+    "description": "Oversees the creative vision for campaigns, visuals, and branding.",
+    "keywords": ["creative direction", "art direction", "branding", "design", "marketing"],
+    "type": "non-technical"
+  },
+  {
+    "id": 101,
+    "title": "Venture Capital Analyst",
+    "description": "Evaluates startups, market sizing, and investment potential.",
+    "keywords": ["vc", "finance", "startups", "investment", "due diligence", "market analysis"],
+    "type": "non-technical"
+  },
+  {
+    "id": 102,
+    "title": "Instructional Designer",
+    "description": "Develops course materials for e-learning platforms.",
+    "keywords": ["e-learning", "curriculum", "addie", "articulate storyline", "lms"],
+    "type": "non-technical"
+  },
+  {
+    "id": 103,
+    "title": "Sustainability Consultant",
+    "description": "Advises businesses on reducing carbon footprints.",
+    "keywords": ["esg", "sustainability", "csr", "climate change", "environmental policy"],
+    "type": "non-technical"
+  },
+  {
+    "id": 104,
+    "title": "Creative Technologist",
+    "description": "Combines art, design, and emerging tech for installations or products.",
+    "keywords": ["creative coding", "ar", "vr", "interactive art", "emerging tech"],
+    "type": "non-technical"
+  }
+]
