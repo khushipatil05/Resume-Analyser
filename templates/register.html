@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-danger {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
+        .alert-success {
+            color: #3c763d;
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ title }}</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.name.label }}<br>
+                {{ form.name(size=32) }}
+            </div>
+            <div class="form-group">
+                {{ form.email.label }}<br>
+                {{ form.email(size=32) }}
+            </div>
+            <div class="form-group">
+                {{ form.mobile_number.label }}<br>
+                {{ form.mobile_number(size=32) }}
+            </div>
+            <div class="form-group">
+                {{ form.password.label }}<br>
+                {{ form.password(size=32) }}
+            </div>
+            <div class="form-group">
+                {{ form.confirm_password.label }}<br>
+                {{ form.confirm_password(size=32) }}
+            </div>
+            <div class="form-group">
+                {{ form.role.label }}<br>
+                {{ form.role }}
+            </div>
+
+            <div id="applicant-fields" style="display: none;">
+                <div class="form-group">
+                    {{ form.graduation_year.label }}<br>
+                    {{ form.graduation_year(size=32) }}
+                </div>
+                <div class="form-group">
+                    {{ form.degree.label }}<br>
+                    {{ form.degree(size=32) }}
+                </div>
+            </div>
+
+            <div id="recruiter-fields" style="display: none;">
+                <div class="form-group">
+                    {{ form.official_email.label }}<br>
+                    {{ form.official_email(size=32) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form.submit() }}
+            </div>
+        </form>
+        <p>Already have an account? <a href="{{ url_for('auth.login') }}">Login Here</a></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleRadios = document.querySelectorAll('input[name="role"]');
+            const applicantFields = document.getElementById('applicant-fields');
+            const recruiterFields = document.getElementById('recruiter-fields');
+
+            function toggleFields() {
+                const selectedRole = document.querySelector('input[name="role"]:checked').value;
+                if (selectedRole === 'applicant') {
+                    applicantFields.style.display = 'block';
+                    recruiterFields.style.display = 'none';
+                } else if (selectedRole === 'recruiter') {
+                    applicantFields.style.display = 'none';
+                    recruiterFields.style.display = 'block';
+                } else {
+                    applicantFields.style.display = 'none';
+                    recruiterFields.style.display = 'none';
+                }
+            }
+
+            roleRadios.forEach(radio => radio.addEventListener('change', toggleFields));
+            toggleFields(); // Call on page load
+        });
+    </script>
+</body>
+</html>

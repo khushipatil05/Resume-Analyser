@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Job Type</title>
+    <style>
+        .container {
+            position: relative;
+        }
+        .new-job-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Example background color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/new_job" class="new-job-button">+ new Job description</a>
+        <h2>Select the type of job you are looking for:</h2>
+        <form method="post">
+            <button type="submit" name="job_type" value="Technical">Technical</button>
+            <button type="submit" name="job_type" value="Non-Technical">Non-Technical</button>
+        </form>
+    </div>
+</body>
+</html>

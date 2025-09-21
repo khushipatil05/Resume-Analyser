@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Domain</title>
+</head>
+<body>
+    <h2>Select Your Domain for {{ job_type }} Jobs</h2>
+    <form action="{{ url_for('auth.select_domain') }}" method="post">
+        <input type="hidden" name="job_type" value="{{ job_type }}">
+        <label for="domain">Choose a domain:</label>
+        <select name="domain" id="domain">
+            {% for domain in domains %}
+                <option value="{{ domain }}">{{ domain }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

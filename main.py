@@ -9,6 +9,7 @@ load_dotenv()
 
 # Local imports
 from resume_analyzer.routes import resumes_bp
+from resume_analyzer.auth import auth_bp
 from resume_analyzer.models import db, Job, Resume, Evaluation
 
 mail = Mail()
@@ -40,10 +41,7 @@ def create_app():
 
     # --- Blueprints & Routes ---
     app.register_blueprint(resumes_bp, url_prefix='/api')
-
-    @app.route("/")
-    def hello_world():
-        return "Resume Analyzer is up and running!"
+    app.register_blueprint(auth_bp)
 
     @app.route("/api/send_feedback_email", methods=['POST'])
     def send_feedback_email():

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .dashboard-container {
+            width: 80%;
+            margin: auto;
+        }
+        .batch-summary, .quick-actions, .candidate-tabs {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .summary-item, .action-item, .tab-item {
+            text-align: center;
+        }
+        .candidate-list {
+            margin-top: 20px;
+        }
+        .candidate-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Processing Candidates for <span id="job-title"></span></h1>
+        
+        <div class="batch-summary">
+            <div class="summary-item">
+                <h3>Total Candidates</h3>
+                <p id="total-candidates"></p>
+            </div>
+            <div class="summary-item">
+                <h3>Shortlisted</h3>
+                <p id="shortlisted-candidates"></p>
+            </div>
+            <div class="summary-item">
+                <h3>Avg Score</h3>
+                <p id="avg-score"></p>
+            </div>
+            <div class="summary-item">
+                <h3>Top Score</h3>
+                <p id="top-score"></p>
+            </div>
+            <div class="summary-item">
+                <h3>With Email</h3>
+                <p id="with-email"></p>
+            </div>
+        </div>
+
+        <h2>Score Distribution</h2>
+        <canvas id="score-distribution-chart"></canvas>
+
+        <h2>Quick Actions</h2>
+        <div class="quick-actions">
+            <button class="action-item">Generate Shortlist Report</button>
+            <button class="action-item">Export Email List</button>
+            <button class="action-item">Download Full Report</button>
+        </div>
+
+        <h2>Detailed Candidate Analysis</h2>
+        <div class="candidate-tabs">
+            <button class="tab-item" onclick="filterCandidates('all')">All Candidates</button>
+            <button class="tab-item" onclick="filterCandidates('shortlisted')">Shortlisted</button>
+            <button class="tab-item" onclick="filterCandidates('not shortlisted')">Not Shortlisted</button>
+        </div>
+        <div class="candidate-list" id="candidate-list">
+            <!-- Candidate items will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        let allCandidates = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const jobId = 1; 
+
+            fetch(`/dashboard/${jobId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('job-title').textContent = data.job_title;
+                    document.getElementById('total-candidates').textContent = data.total_candidates;
+                    document.getElementById('shortlisted-candidates').textContent = data.shortlisted_candidates;
+                    document.getElementById('avg-score').textContent = data.avg_score;
+                    document.getElementById('top-score').textContent = data.top_score;
+                    document.getElementById('with-email').textContent = data.with_email;
+
+                    allCandidates = data.detailed_analysis;
+                    renderCandidates(allCandidates);
+
+                    const ctx = document.getElementById('score-distribution-chart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: Object.keys(data.score_distribution),
+                            datasets: [{
+                                label: 'Number of Candidates',
+                                data: Object.values(data.score_distribution),
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+        });
+
+        function renderCandidates(candidates) {
+            const candidateList = document.getElementById('candidate-list');
+            candidateList.innerHTML = '';
+            candidates.forEach(candidate => {
+                const candidateItem = document.createElement('div');
+                candidateItem.className = 'candidate-item';
+                candidateItem.innerHTML = `<strong>${candidate.name}</strong> - ${candidate.score} - <em>${candidate.verdict}</em>`;
+                candidateList.appendChild(candidateItem);
+            });
+        }
+
+        function filterCandidates(filter) {
+            if (filter === 'all') {
+                renderCandidates(allCandidates);
+            } else {
+                const filtered = allCandidates.filter(c => c.verdict.toLowerCase() === filter);
+                renderCandidates(filtered);
+            }
+        }
+    </script>
+</body>
+</html>

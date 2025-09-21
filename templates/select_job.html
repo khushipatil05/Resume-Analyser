@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Job</title>
+</head>
+<body>
+    <h2>Select Your Job in the {{ domain }} Domain</h2>
+    <p>Job Type: {{ job_type }}</p>
+    <p>Domain: {{ domain }}</p>
+    <form method="post">
+        <input type="hidden" name="job_type" value="{{ job_type }}">
+        <input type="hidden" name="domain" value="{{ domain }}">
+        <label for="job">Choose a job:</label>
+        <select name="job" id="job">
+            {% for job in jobs %}
+                <option value="{{ job }}">{{ job }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
