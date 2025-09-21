@@ -1,0 +1,89 @@
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2 class="mb-4">Your Resume Analysis</h2>
+        </div>
+    </div>
+
+    <div class="row align-items-center mb-4">
+        <div class="col-md-4 text-center">
+            <div class="position-relative d-inline-block mx-auto" style="width: 200px; height: 200px;">
+                <svg class="progress-circle-svg" width="200" height="200" style="transform: rotate(-90deg);">
+                    <circle stroke="#e9ecef" stroke-width="12" fill="none" cx="100" cy="100" r="90"></circle>
+                    <circle id="progress-bar" stroke="#0d6efd" stroke-width="12" stroke-linecap="round" fill="none" cx="100" cy="100" r="90"></circle>
+                </svg>
+                <div class="position-absolute top-50 start-50 translate-middle display-4 fw-bold text-primary" id="progress-text">0%</div>
+            </div>
+            <div id="verdict-badge-container" class="mt-3">
+                <span class="badge rounded-pill fs-5 text-uppercase {% if verdict.lower() == 'shortlisted' %}bg-success{% else %}bg-danger{% endif %}">{{ verdict }}</span>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="my-0"><i class="bi bi-robot"></i> AI-Generated Feedback</h4>
+                </div>
+                <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+                    <p class="card-text" style="white-space: pre-wrap;">{{ feedback }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // Check if the script has already run in this context.
+        if (window.analysisScriptHasRun) {
+            return;
+        }
+        window.analysisScriptHasRun = true;
+
+        const finalScore = {{ final_score }};
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+
+        if (!progressBar || !progressText) return;
+
+        const radius = progressBar.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
+
+        progressBar.style.strokeDasharray = `${circumference} ${circumference}`;
+        progressBar.style.strokeDashoffset = circumference;
+
+        function setProgress(percent) {
+            const offset = circumference - (percent / 100) * circumference;
+            progressBar.style.strokeDashoffset = offset;
+            // Change color based on score
+            if (percent < 50) {
+                progressBar.style.stroke = "#dc3545"; // Red
+            } else if (percent < 75) {
+                progressBar.style.stroke = "#ffc107"; // Yellow
+            } else {
+                progressBar.style.stroke = "#198754"; // Green
+            }
+        }
+
+        let currentScore = 0;
+        const duration = 1500; // Animation duration in ms
+        const stepTime = 20; // Update interval
+        const increment = finalScore * (stepTime / duration);
+        
+        const animateScore = () => {
+            currentScore += increment;
+            if (currentScore >= finalScore) {
+                currentScore = finalScore;
+                progressText.textContent = Math.floor(currentScore) + '%';
+                setProgress(finalScore);
+                return;
+            }
+            progressText.textContent = Math.floor(currentScore) + '%';
+            requestAnimationFrame(animateScore);
+        };
+        
+        setProgress(0); // Initialize
+        requestAnimationFrame(animateScore);
+
+    })();
+</script>

@@ -1,126 +1,170 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Recruiter Dashboard</title>
-    <style>
-        body { font-family: sans-serif; margin: 2em; }
-        .container { max-width: 800px; margin: auto; padding: 2em; border: 1px solid #ccc; border-radius: 5px; }
-        .form-group { margin-bottom: 1em; }
-        label { display: block; margin-bottom: .5em; }
-        input, select, textarea { width: 100%; padding: .5em; }
-        .btn { padding: .75em 1.5em; background-color: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
-        .job-list { margin-top: 2em; }
-        .job-item { padding: 1em; border: 1px solid #eee; margin-bottom: 1em; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Recruiter Dashboard</h2>
-        <p>Welcome, {{ current_user.name }}!</p>
 
-        <!-- Form to Add a New Job -->
-        <div id="add-job-form">
-            <h3>Post a New Job</h3>
-            <form id="jd-upload-form" action="/jd/upload" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="jd-file">Upload Job Description (.pdf, .docx)</label>
-                    <input type="file" id="jd-file" name="file" accept=".pdf,.docx" required>
-                </div>
-                <button type="submit" class="btn">Parse Job Description</button>
-            </form>
-            <div id="parsed-results" style="display:none; margin-top: 1em;">
-                <h4>Extracted Details</h4>
-                <form id="job-post-form">
-                    <div class="form-group">
-                        <label>Role Title</label>
-                        <input type="text" id="role_title" name="title" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Must-Have Skills (comma-separated)</label>
-                        <textarea id="must_have_skills" name="keywords" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Qualifications</label>
-                        <textarea id="qualifications" name="description" rows="4" required></textarea>
-                    </div>
-                     <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" id="location" name="location">
-                    </div>
-                    <button type="submit" class="btn">Post This Job</button>
-                </form>
+{% extends "layout.html" %}
+
+{% block title %}
+    Recruiter Dashboard - Resume Analyzer
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Recruiter Dashboard</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group me-2">
+                <p class="h5 mb-0">Welcome, {{ current_user.name }}!</p>
             </div>
-        </div>
-
-        <!-- List of Posted Jobs -->
-        <div class="job-list">
-            <h3>Your Posted Jobs</h3>
-            {% for job in jobs %}
-                <div class="job-item">
-                    <h4><a href="/job-analytics/{{ job.id }}">{{ job.title }}</a></h4>
-                    <p>{{ job.required_skills | join(', ') }}</p>
-                </div>
-            {% else %}
-                <p>You have not posted any jobs yet.</p>
-            {% endfor %}
         </div>
     </div>
 
-    <script>
-        // Handle the Job Description Upload
-        document.getElementById('jd-upload-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const form = e.target;
-            const formData = new FormData(form);
-            const resultsDiv = document.getElementById('parsed-results');
+    <div class="row g-4">
+        <!-- Post a New Job -->
+        <div class="col-lg-5">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="my-0 font-weight-normal"><i class="bi bi-upload"></i> Post a New Job</h4>
+                </div>
+                <div class="card-body">
+                    <form id="jd-upload-form">
+                        <div class="mb-3">
+                            <label for="jd-file" class="form-label">Upload Job Description (.pdf, .docx)</label>
+                            <input type="file" class="form-control" id="jd-file" name="file" accept=".pdf,.docx" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Parse Job Description</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-            try {
-                const response = await fetch(form.action, { method: 'POST', body: formData });
-                const data = await response.json();
+            <!-- Parsed Job Details -->
+            <div id="parsed-results" class="card shadow-sm" style="display:none;">
+                <div class="card-header bg-success text-white">
+                    <h4 class="my-0 font-weight-normal"><i class="bi bi-check2-circle"></i> Confirm and Post Job</h4>
+                </div>
+                <div class="card-body">
+                    <form id="job-post-form">
+                        <div class="mb-3">
+                            <label class="form-label">Role Title</label>
+                            <input type="text" id="role_title" name="title" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Must-Have Skills (comma-separated)</label>
+                            <textarea id="must_have_skills" name="keywords" rows="3" class="form-control" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Qualifications</label>
+                            <textarea id="qualifications" name="description" rows="4" class="form-control" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" id="location" name="location" class="form-control">
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Post This Job</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-                if (response.ok) {
-                    document.getElementById('role_title').value = data.role_title || '';
-                    document.getElementById('must_have_skills').value = (data.must_have_skills || []).join(', ');
-                    document.getElementById('qualifications').value = data.qualifications || '';
-                    resultsDiv.style.display = 'block';
-                } else {
-                    alert('Error parsing job description: ' + data.error);
-                }
-            } catch (error) {
-                alert('An unexpected error occurred during parsing.');
+        <!-- Your Posted Jobs -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="my-0 font-weight-normal"><i class="bi bi-briefcase-fill"></i> Your Posted Jobs</h4>
+                </div>
+                <div class="card-body">
+                    {% if jobs %}
+                        <div class="list-group">
+                            {% for job in jobs %}
+                                <a href="{{ url_for('resumes.job_analytics', job_id=job.id) }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{ job.title }}</h5>
+                                        <small class="text-muted">{{ job.created_at.strftime('%Y-%m-%d') }}</small>
+                                    </div>
+                                    <p class="mb-1 text-muted">{{ job.location }}</p>
+                                    <small class="text-primary">Keywords: {{ (job.required_skills or []) | join(', ') }}</small>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center p-4">
+                            <i class="bi bi-info-circle fs-1 text-muted"></i>
+                            <p class="mt-2">You have not posted any jobs yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('jd-upload-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        const resultsDiv = document.getElementById('parsed-results');
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Parsing...`;
+        submitButton.disabled = true;
+
+        try {
+            const response = await fetch('/jd/upload', { method: 'POST', body: formData });
+            const data = await response.json();
+
+            if (response.ok) {
+                document.getElementById('role_title').value = data.role_title || '';
+                document.getElementById('must_have_skills').value = (data.must_have_skills || []).join(', ');
+                document.getElementById('qualifications').value = data.qualifications || '';
+                document.getElementById('location').value = data.location || '';
+                resultsDiv.style.display = 'block';
+            } else {
+                alert('Error parsing job description: ' + data.error);
             }
-        });
+        } catch (error) {
+            alert('An unexpected error occurred during parsing.');
+        } finally {
+            submitButton.innerHTML = originalButtonText;
+            submitButton.disabled = false;
+        }
+    });
 
-        // Handle the Final Job Posting
-        document.getElementById('job-post-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const form = e.target;
-            const jobData = {
-                title: form.title.value,
-                keywords: form.keywords.value.split(',').map(s => s.trim()),
-                description: form.description.value,
-                location: form.location.value
-            };
+    document.getElementById('job-post-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const jobData = {
+            title: form.title.value,
+            keywords: form.keywords.value.split(',').map(s => s.trim()),
+            description: form.description.value,
+            location: form.location.value
+        };
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Posting...`;
+        submitButton.disabled = true;
 
-            try {
-                const response = await fetch('/jobs', { 
-                    method: 'POST', 
-                    body: JSON.stringify(jobData),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                const result = await response.json();
+        try {
+            const response = await fetch('/jobs', { 
+                method: 'POST', 
+                body: JSON.stringify(jobData),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const result = await response.json();
 
-                if (response.ok) {
-                    alert('Job posted successfully!');
-                    window.location.reload(); // Refresh to see the new job
-                } else {
-                    alert('Error posting job: ' + result.error);
-                }
-            } catch (error) {
-                alert('An unexpected error occurred during posting.');
+            if (response.ok) {
+                alert('Job posted successfully!');
+                window.location.reload();
+            } else {
+                alert('Error posting job: ' + result.error);
             }
-        });
-    </script>
-</body>
-</html>
+        } catch (error) {
+            alert('An unexpected error occurred during posting.');
+        } finally {
+            submitButton.innerHTML = originalButtonText;
+            submitButton.disabled = false;
+        }
+    });
+</script>
+{% endblock %}

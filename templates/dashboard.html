@@ -1,146 +1,223 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recruiter Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: sans-serif;
-        }
-        .dashboard-container {
-            width: 80%;
-            margin: auto;
-        }
-        .batch-summary, .quick-actions, .candidate-tabs {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-        }
-        .summary-item, .action-item, .tab-item {
-            text-align: center;
-        }
-        .candidate-list {
-            margin-top: 20px;
-        }
-        .candidate-item {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 5px;
-        }
-    </style>
-</head>
-<body>
-    <div class="dashboard-container">
-        <h1>Processing Candidates for <span id="job-title"></span></h1>
-        
-        <div class="batch-summary">
-            <div class="summary-item">
-                <h3>Total Candidates</h3>
-                <p id="total-candidates"></p>
-            </div>
-            <div class="summary-item">
-                <h3>Shortlisted</h3>
-                <p id="shortlisted-candidates"></p>
-            </div>
-            <div class="summary-item">
-                <h3>Avg Score</h3>
-                <p id="avg-score"></p>
-            </div>
-            <div class="summary-item">
-                <h3>Top Score</h3>
-                <p id="top-score"></p>
-            </div>
-            <div class="summary-item">
-                <h3>With Email</h3>
-                <p id="with-email"></p>
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Recruiter Dashboard - Resume Analyzer
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Processing Candidates for: <span id="job-title" class="text-primary">Loading...</span></h1>
+    </div>
+
+    <!-- Batch Summary -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="card text-white bg-primary h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-people-fill"></i> Total Candidates</h5>
+                    <p class="card-text fs-4" id="total-candidates">-</p>
+                </div>
             </div>
         </div>
-
-        <h2>Score Distribution</h2>
-        <canvas id="score-distribution-chart"></canvas>
-
-        <h2>Quick Actions</h2>
-        <div class="quick-actions">
-            <button class="action-item">Generate Shortlist Report</button>
-            <button class="action-item">Export Email List</button>
-            <button class="action-item">Download Full Report</button>
+        <div class="col-md-3 col-sm-6">
+            <div class="card text-white bg-success h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-person-check-fill"></i> Shortlisted</h5>
+                    <p class="card-text fs-4" id="shortlisted-candidates">-</p>
+                </div>
+            </div>
         </div>
-
-        <h2>Detailed Candidate Analysis</h2>
-        <div class="candidate-tabs">
-            <button class="tab-item" onclick="filterCandidates('all')">All Candidates</button>
-            <button class="tab-item" onclick="filterCandidates('shortlisted')">Shortlisted</button>
-            <button class="tab-item" onclick="filterCandidates('not shortlisted')">Not Shortlisted</button>
+        <div class="col-md-2 col-sm-4">
+            <div class="card bg-light h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-graph-up"></i> Avg Score</h5>
+                    <p class="card-text fs-4" id="avg-score">-</p>
+                </div>
+            </div>
         </div>
-        <div class="candidate-list" id="candidate-list">
-            <!-- Candidate items will be dynamically inserted here -->
+        <div class="col-md-2 col-sm-4">
+            <div class="card bg-light h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-star-fill"></i> Top Score</h5>
+                    <p class="card-text fs-4" id="top-score">-</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-4">
+            <div class="card bg-light h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-envelope-fill"></i> With Email</h5>
+                    <p class="card-text fs-4" id="with-email">-</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script>
-        let allCandidates = [];
+    <div class="row g-4">
+        <!-- Score Distribution -->
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title"><i class="bi bi-bar-chart-line-fill"></i> Score Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="score-distribution-chart"></canvas>
+                </div>
+            </div>
+        </div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const jobId = 1; 
+        <!-- Quick Actions -->
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title"><i class="bi bi-lightning-fill"></i> Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary"><i class="bi bi-file-earmark-text"></i> Generate Shortlist Report</button>
+                        <button class="btn btn-outline-secondary"><i class="bi bi-envelope"></i> Export Email List</button>
+                        <button class="btn btn-outline-dark"><i class="bi bi-download"></i> Download Full Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            fetch(`/dashboard/${jobId}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('job-title').textContent = data.job_title;
-                    document.getElementById('total-candidates').textContent = data.total_candidates;
-                    document.getElementById('shortlisted-candidates').textContent = data.shortlisted_candidates;
-                    document.getElementById('avg-score').textContent = data.avg_score;
-                    document.getElementById('top-score').textContent = data.top_score;
-                    document.getElementById('with-email').textContent = data.with_email;
+    <!-- Detailed Candidate Analysis -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title"><i class="bi bi-person-lines-fill"></i> Detailed Candidate Analysis</h5>
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" onclick="filterCandidates('all', this)">All Candidates</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" onclick="filterCandidates('shortlisted', this)">Shortlisted</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" onclick="filterCandidates('not shortlisted', this)">Not Shortlisted</button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="list-group" id="candidate-list">
+                <!-- Candidate items will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+</div>
 
-                    allCandidates = data.detailed_analysis;
-                    renderCandidates(allCandidates);
+<!-- Add Chart.js from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    let allCandidates = [];
+    let scoreChart;
 
-                    const ctx = document.getElementById('score-distribution-chart').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: Object.keys(data.score_distribution),
-                            datasets: [{
-                                label: 'Number of Candidates',
-                                data: Object.values(data.score_distribution),
-                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                });
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+        const jobId = 1; // This should be dynamically set based on the selected job
 
-        function renderCandidates(candidates) {
-            const candidateList = document.getElementById('candidate-list');
-            candidateList.innerHTML = '';
-            candidates.forEach(candidate => {
-                const candidateItem = document.createElement('div');
-                candidateItem.className = 'candidate-item';
-                candidateItem.innerHTML = `<strong>${candidate.name}</strong> - ${candidate.score} - <em>${candidate.verdict}</em>`;
-                candidateList.appendChild(candidateItem);
-            });
-        }
+        fetch(`/dashboard/${jobId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('job-title').textContent = data.job_title;
+                document.getElementById('total-candidates').textContent = data.total_candidates;
+                document.getElementById('shortlisted-candidates').textContent = data.shortlisted_candidates;
+                document.getElementById('avg-score').textContent = parseFloat(data.avg_score).toFixed(2);
+                document.getElementById('top-score').textContent = parseFloat(data.top_score).toFixed(2);
+                document.getElementById('with-email').textContent = data.with_email;
 
-        function filterCandidates(filter) {
-            if (filter === 'all') {
+                allCandidates = data.detailed_analysis;
                 renderCandidates(allCandidates);
-            } else {
-                const filtered = allCandidates.filter(c => c.verdict.toLowerCase() === filter);
-                renderCandidates(filtered);
-            }
+                renderChart(data.score_distribution);
+            })
+            .catch(error => {
+                console.error('Error fetching dashboard data:', error);
+                document.getElementById('job-title').textContent = "Error loading data";
+            });
+    });
+
+    function renderChart(scoreDistribution) {
+        const ctx = document.getElementById('score-distribution-chart').getContext('2d');
+        if(scoreChart) {
+            scoreChart.destroy();
         }
-    </script>
-</body>
-</html>
+        scoreChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(scoreDistribution),
+                datasets: [{
+                    label: 'Number of Candidates',
+                    data: Object.values(scoreDistribution),
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    function renderCandidates(candidates) {
+        const candidateList = document.getElementById('candidate-list');
+        candidateList.innerHTML = '';
+        if (candidates.length === 0) {
+            candidateList.innerHTML = '<div class="list-group-item">No candidates to display in this category.</div>';
+            return;
+        }
+
+        candidates.sort((a, b) => b.score - a.score); // Sort by score descending
+
+        candidates.forEach(candidate => {
+            let badgeClass = 'bg-secondary';
+            if (candidate.verdict.toLowerCase() === 'shortlisted') {
+                badgeClass = 'bg-success';
+            } else if (candidate.verdict.toLowerCase() === 'not shortlisted') {
+                badgeClass = 'bg-danger';
+            }
+
+            const candidateItem = document.createElement('a');
+            candidateItem.href = '#'; // Or link to a detailed view: `/candidate/${candidate.id}`
+            candidateItem.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+            candidateItem.innerHTML = `
+                <div>
+                    <h5 class="mb-1">${candidate.name}</h5>
+                    <small>Score: ${parseFloat(candidate.score).toFixed(2)}</small>
+                </div>
+                <span class="badge ${badgeClass} rounded-pill">${candidate.verdict}</span>
+            `;
+            candidateList.appendChild(candidateItem);
+        });
+    }
+
+    function filterCandidates(filter, element) {
+        // Update active tab
+        document.querySelectorAll('.nav-tabs .nav-link').forEach(tab => tab.classList.remove('active'));
+        element.classList.add('active');
+
+        if (filter === 'all') {
+            renderCandidates(allCandidates);
+        } else {
+            const filtered = allCandidates.filter(c => c.verdict.toLowerCase() === filter);
+            renderCandidates(filtered);
+        }
+    }
+</script>
+{% endblock %}
