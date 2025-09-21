@@ -14,3 +14,4 @@ python-Levenshtein
 Flask-WTF
 email_validator
 Flask-Login
+PyMuPDF

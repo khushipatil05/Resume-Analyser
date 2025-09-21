@@ -1,6 +1,47 @@
 import google.generativeai as genai
 import os
 import json
+import docx
+import fitz  # PyMuPDF
+
+def extract_text_from_file(file_stream, filename: str) -> str:
+    """
+    Extracts text from a file stream (.docx or .pdf).
+
+    Args:
+        file_stream: The file stream object to read from.
+        filename: The name of the file, used to determine the file type.
+
+    Returns:
+        The extracted text as a single string.
+    """
+    if filename.endswith(".docx"):
+        try:
+            doc = docx.Document(file_stream)
+            return "\n".join([para.text for para in doc.paragraphs])
+        except Exception as e:
+            print(f"Error reading .docx file: {e}")
+            return ""
+    elif filename.endswith(".pdf"):
+        try:
+            # PyMuPDF opens a file stream directly
+            pdf_document = fitz.open(stream=file_stream.read(), filetype="pdf")
+            text = ""
+            for page_num in range(len(pdf_document)):
+                page = pdf_document.load_page(page_num)
+                text += page.get_text()
+            pdf_document.close()
+            return text
+        except Exception as e:
+            print(f"Error reading .pdf file: {e}")
+            return ""
+    else:
+        # For other file types, assume it's plain text
+        try:
+            return file_stream.read().decode('utf-8')
+        except Exception as e:
+            print(f"Error reading plain text file: {e}")
+            return ""
 
 def configure_genai():
     """Configures the Generative AI model with the Google API key."""
